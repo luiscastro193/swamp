@@ -25,13 +25,10 @@ function module(n, m) {
 }
 
 class Firefly {
-	constructor(newborn, lifeDiff) {
+	constructor(lifeDiff) {
 		this.remainingLife = randomLife();
-		
-		if (newborn)
-			this.remainingLife += lifeDiff;
-		else
-			this.remainingLife *= Math.random();
+		if (lifeDiff) this.remainingLife += lifeDiff;
+		else this.remainingLife *= Math.random();
 		
 		if (this.remainingLife > 0) {
 			this.size = randomSize();
@@ -72,7 +69,7 @@ function resizeCanvas() {
 addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-let drawObjects = Array.from({length: N}, () => new Firefly(false));
+let drawObjects = Array.from({length: N}, () => new Firefly());
 let spawnTime = randomSpawn();
 let lastTime = performance.now();
 
@@ -82,7 +79,7 @@ function draw(time) {
 	spawnTime -= timeDiff;
 	
 	while (spawnTime <= 0) {
-		drawObjects.push(new Firefly(true, spawnTime + timeDiff));
+		drawObjects.push(new Firefly(spawnTime + timeDiff));
 		spawnTime += randomSpawn();
 	}
 	
