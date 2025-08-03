@@ -25,9 +25,9 @@ function module(n, m) {
 }
 
 class Firefly {
-	constructor(lifeDiff) {
+	constructor(lifeDelta) {
 		this.remainingLife = randomLife();
-		if (lifeDiff) this.remainingLife += lifeDiff;
+		if (lifeDelta) this.remainingLife += lifeDelta;
 		else this.remainingLife *= Math.random();
 		
 		if (this.remainingLife > 0) {
@@ -74,17 +74,17 @@ let spawnTime = randomSpawn();
 let lastTime = performance.now();
 
 function draw(time) {
-	const timeDiff = time - lastTime;
+	const elapsedTime = time - lastTime;
 	lastTime = time;
-	spawnTime -= timeDiff;
+	spawnTime -= elapsedTime;
 	
 	while (spawnTime <= 0) {
-		drawObjects.push(new Firefly(spawnTime + timeDiff));
+		drawObjects.push(new Firefly(spawnTime + elapsedTime));
 		spawnTime += randomSpawn();
 	}
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	drawObjects = drawObjects.filter(object => object.draw(timeDiff));
+	drawObjects = drawObjects.filter(object => object.draw(elapsedTime));
 	requestAnimationFrame(draw);	
 }
 
