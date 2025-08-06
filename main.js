@@ -32,7 +32,7 @@ class Firefly {
 		
 		if (this.remainingLife > 0) {
 			this.size = randomSize();
-			this.alpha = randomAlpha();
+			this.color = `rgba(255, 255, 255, ${randomAlpha()})`;
 			this.x = randomPosition();
 			this.y = randomPosition();
 			this.theta = PI2 * Math.random();
@@ -51,7 +51,7 @@ class Firefly {
 			
 			ctx.beginPath();
 			ctx.arc(this.x * width, this.y * height, this.size * referenceLength, 0, PI2);
-			ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+			ctx.fillStyle = this.color;
 			ctx.fill();
 			
 			return true;
