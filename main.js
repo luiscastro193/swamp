@@ -83,7 +83,7 @@ function draw(time) {
 		spawnTime += randomSpawn();
 	}
 	
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, width, height);
 	drawObjects = drawObjects.filter(object => object.draw(elapsedTime));
 	requestAnimationFrame(draw);	
 }
