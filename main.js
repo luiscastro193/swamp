@@ -67,7 +67,7 @@ function resizeCanvas() {
 }
 
 addEventListener("resize", resizeCanvas);
-resizeCanvas();
+requestAnimationFrame(() => requestAnimationFrame(resizeCanvas));
 
 let drawObjects = Array.from({length: N}, () => new Firefly());
 let spawnTime = randomSpawn();
