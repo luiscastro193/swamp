@@ -60,10 +60,12 @@ class Firefly {
 }
 
 function resizeCanvas() {
-	const size = canvas.getBoundingClientRect();
-	canvas.width = width = Math.ceil(size.width * devicePixelRatio);
-	canvas.height = height = Math.ceil(size.height * devicePixelRatio);
+	({width, height} = canvas.getBoundingClientRect());
 	referenceLength = Math.min(width, height);
+	canvas.width = Math.ceil(width * devicePixelRatio);
+	canvas.height = Math.ceil(height * devicePixelRatio);
+	ctx.resetTransform();
+	ctx.scale(canvas.width / width, canvas.height / height);
 }
 
 addEventListener("resize", resizeCanvas);
