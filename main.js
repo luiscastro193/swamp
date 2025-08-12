@@ -64,7 +64,6 @@ function resizeCanvas() {
 	referenceLength = Math.min(width, height);
 	canvas.width = Math.ceil(width * devicePixelRatio);
 	canvas.height = Math.ceil(height * devicePixelRatio);
-	ctx.resetTransform();
 	ctx.scale(canvas.width / width, canvas.height / height);
 }
 
