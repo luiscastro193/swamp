@@ -90,3 +90,18 @@ function draw(time) {
 }
 
 requestAnimationFrame(draw);
+
+function autoHideCursor(element, timeout = 1000) {
+	let timer;
+	
+	function setTimer() {
+		element.style.cursor = '';
+		clearTimeout(timer);
+		timer = setTimeout(() => {element.style.cursor = 'none'}, timeout);
+	}
+	
+	element.addEventListener('mousemove', setTimer, {passive: true});
+	setTimer();
+}
+
+autoHideCursor(canvas);
