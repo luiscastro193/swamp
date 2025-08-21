@@ -60,12 +60,9 @@ class Firefly {
 }
 
 function resizeCanvas([resizeEntry]) {
-	width = resizeEntry.contentBoxSize[0].inlineSize;
-	height = resizeEntry.contentBoxSize[0].blockSize;
+	canvas.width = width = resizeEntry.devicePixelContentBoxSize?.[0].inlineSize || Math.ceil(resizeEntry.contentBoxSize[0].inlineSize * devicePixelRatio);
+	canvas.height = height = resizeEntry.devicePixelContentBoxSize?.[0].blockSize || Math.ceil(resizeEntry.contentBoxSize[0].blockSize * devicePixelRatio);
 	referenceLength = Math.min(width, height);
-	canvas.width = resizeEntry.devicePixelContentBoxSize?.[0].inlineSize || Math.ceil(width * devicePixelRatio);
-	canvas.height = resizeEntry.devicePixelContentBoxSize?.[0].blockSize || Math.ceil(height * devicePixelRatio);
-	ctx.scale(canvas.width / width, canvas.height / height);
 }
 
 new ResizeObserver(resizeCanvas).observe(canvas);
