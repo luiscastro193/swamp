@@ -59,16 +59,16 @@ class Firefly {
 	}
 }
 
-function resizeCanvas() {
-	({width, height} = canvas.getBoundingClientRect());
+function resizeCanvas([resizeEntry]) {
+	width = resizeEntry.contentBoxSize[0].inlineSize;
+	height = resizeEntry.contentBoxSize[0].blockSize;
 	referenceLength = Math.min(width, height);
-	canvas.width = Math.ceil(width * devicePixelRatio);
-	canvas.height = Math.ceil(height * devicePixelRatio);
+	canvas.width = resizeEntry.devicePixelContentBoxSize?.[0].inlineSize || Math.ceil(width * devicePixelRatio);
+	canvas.height = resizeEntry.devicePixelContentBoxSize?.[0].blockSize || Math.ceil(height * devicePixelRatio);
 	ctx.scale(canvas.width / width, canvas.height / height);
 }
 
-addEventListener("resize", resizeCanvas);
-requestAnimationFrame(() => requestAnimationFrame(resizeCanvas));
+new ResizeObserver(resizeCanvas).observe(canvas);
 
 let drawObjects = Array.from({length: N}, () => new Firefly());
 let spawnTime = randomSpawn();
