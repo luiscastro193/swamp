@@ -1,20 +1,20 @@
 "use strict";
-import * as distributions from 'https://luiscastro193.github.io/PRNG/distributions.js';
+import * as distributions from 'https://luiscastro193.github.io/PRNG/PRNG.js';
 
 const PI2 = Math.PI * 2;
-const randomNormal = distributions.toNormal(Math.random);
+const rng = await distributions.generator();
+const random = await distributions.next(rng);
 const N = 15;
 const lifeExpectancy = 60 * 1000;
 const lifeDeviation = 10 * 1000;
-const randomLife = distributions.toGamma(lifeExpectancy, lifeDeviation, Math.random);
-const randomSpawn = distributions.toGamma(lifeExpectancy / N, lifeDeviation / N, Math.random);
-const randomSize = distributions.toLogNormal(.03, .005, Math.random);
-const randomAlpha = distributions.toBeta(.85, .1, Math.random);
-const randomPosition = distributions.toBeta(.5, .25, Math.random);
-const steerDeviation = 5e-4 * PI2;
-const randomSteer = () => steerDeviation * randomNormal();
-const randomSpeed = distributions.toLogNormal(.01 / 1000, .005 / 1000, Math.random);
-const randomAcceleration = distributions.toGamma(1, 1e-4, Math.random);
+const randomLife = await distributions.distribution('gamma', lifeExpectancy, lifeDeviation, rng);
+const randomSpawn = await distributions.distribution('gamma', lifeExpectancy / N, lifeDeviation / N, rng);
+const randomSize = await distributions.distribution('lognormal', .03, .005, rng);
+const randomAlpha = await distributions.distribution('beta', .85, .1, rng);
+const randomPosition = await distributions.distribution('beta', .5, .25, rng);
+const randomSteer = await distributions.distribution('normal', 0, 5e-4 * PI2, rng);
+const randomSpeed = await distributions.distribution('lognormal', .01 / 1000, .005 / 1000, rng);
+const randomAcceleration = await distributions.distribution('gamma', 1, 1e-4, rng);
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -28,14 +28,14 @@ class Firefly {
 	constructor(lifeDelta) {
 		this.remainingLife = randomLife();
 		if (lifeDelta) this.remainingLife += lifeDelta;
-		else this.remainingLife *= Math.random();
+		else this.remainingLife *= random();
 		
 		if (this.remainingLife > 0) {
 			this.size = randomSize();
 			this.color = `rgba(255, 255, 255, ${randomAlpha()})`;
 			this.x = randomPosition();
 			this.y = randomPosition();
-			this.theta = PI2 * Math.random();
+			this.theta = PI2 * random();
 			this.speed = randomSpeed();
 		}
 	}
